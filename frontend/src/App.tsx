@@ -3,31 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import SearchMovies from './pages/SearchMovies';
 import MovieDetails from './pages/MovieDetails';
 import Favorites from './pages/Favorites.tsx';
-import axios from 'axios';
 
 function App() {
-
-  // some get request
-  // output would be a console log 
-  // that json would be the
-
-
-  const backendUrl = 'http://localhost:3001/movielist'; // Your local backend URL
-
-  axios.get(backendUrl)
-    .then(function (response) {
-      // handle success
-      console.log("this worked!");
-      console.log(response);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    })
-    .finally(function () {
-      // always executed
-    });
-
 
   return (
     <Router>

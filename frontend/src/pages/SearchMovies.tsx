@@ -1,56 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-
-interface Movie {
-    id: string;
-    title: string;
-    year: number;
-}
-
-const sampleMovies: Movie[] = [
-    { id: '1', title: 'The Shawshank Redemption', year: 1994 },
-    { id: '2', title: 'The Godfather', year: 1972 },
-    { id: '3', title: 'The Dark Knight', year: 2008 },
-    { id: '4', title: 'Pulp Fiction', year: 1994 },
-    { id: '5', title: 'Forrest Gump', year: 1994 },
-];
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const SearchMovies: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const [movies, setMovies] = useState<Movie[]>(sampleMovies);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    useEffect(() => {
-        handleSearch();
-    }, [searchTerm]);
+    const [movies, setMovies] = useState([]);
 
-    const handleSearch = () => {
-        const filteredMovies = sampleMovies.filter(movie =>
-            movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setMovies(filteredMovies);
-    };
+    const backendUrl = 'http://localhost:3001/movielist'; // Your local backend URL
+
+    async function getMovies() {
+        const response = await axios.get(backendUrl) // pass the searchTerm to the backend somehow
+        console.log("this worked!");
+        console.log(response.data); // Use response.data to simplify it
+        setMovies(response.data)
+    }
+
+    useEffect(function () {
+        getMovies()
+    }, [searchTerm])
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4">Search Movies</h1>
-            <div className="mb-4">
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="border p-2 mr-2"
-                    placeholder="Enter movie title"
-                />
-            </div>
-            <div>
-                {movies.map((movie) => (
-                    <div key={movie.id} className="mb-2">
-                        <Link to={`/movie/${movie.id}`} className="text-blue-500 hover:underline">
-                            {movie.title} ({movie.year})
-                        </Link>
-                    </div>
+            <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-gray-100 border border-gray-300 rounded-md px-4 py-2"
+            />
+            <ul> {/* note for self, study this syntax, it's really import */}
+                {movies.map((movie, index) => (
+                    <li key={index}>{movie.name}</li>
                 ))}
-            </div>
+            </ul>
         </div>
     );
 };

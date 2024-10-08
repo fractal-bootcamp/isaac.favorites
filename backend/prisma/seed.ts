@@ -17,5 +17,3 @@ main()
   .finally(() => {
     prisma.$disconnect();
   });
-
-// Could not get this to work??

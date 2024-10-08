@@ -1,20 +1,44 @@
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 const app = express();
-const port = 3000;
 
-// Use CORS middleware
-app.use(cors());
-
-// Basic middleware to parse JSON
 app.use(express.json());
 
-// Test API endpoint
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello from the backend!' });
+// Create a new user
+app.post("/users", async (req, res) => {
+  const { email, name } = req.body;
+  try {
+    const user = await prisma.user.create({
+      data: { email, name },
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ error: "Unable to create user" });
+  }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+// Get all users
+app.get("/users", async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+});
+
+// Get a user by ID
+app.get("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const user = await prisma.user.findUnique({
+    where: { id: Number(id) },
+  });
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404).json({ error: "User not found" });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

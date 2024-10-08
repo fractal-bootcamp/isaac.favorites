@@ -21,6 +21,8 @@ console.log(allMovies);
 console.log("Hello");
 
 app.get("/movielist", async (req, res) => {
+  // THIS FUNCTION NEEDS SOME INPUT TO FILTER WITH
+  console.log(req.body.searchTerm);
   res.json(allMovies);
 });
 

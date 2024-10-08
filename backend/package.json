@@ -2,9 +2,16 @@
   "name": "backend",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest",
-    "prisma": "^5.20.0"
+    "@types/node": "^22.7.5",
+    "prisma": "^5.20.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -13,5 +20,8 @@
     "@prisma/client": "5.20.0",
     "cors": "^2.8.5",
     "express": "^4.21.0"
-  }
+  },
+"prisma": {
+  "seed": "tsx seed.ts"
+}
 }

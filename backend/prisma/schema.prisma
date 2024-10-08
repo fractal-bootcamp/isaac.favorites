@@ -14,7 +14,16 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id     Int     @id @default(autoincrement())
+  email  String  @unique
+  name   String?
+  movies Movie[] @relation("Favorites")
+}
+
+model Movie {
+  id       Int    @id @default(autoincrement())
+  name     String
+  year     Int
+  director String
+  users    User[] @relation("Favorites")
 }
